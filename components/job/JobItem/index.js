@@ -1,20 +1,18 @@
 import React from "react";
 import Link from "next/link";
+import moment from "moment";
 
-const JobItem = () => {
+const JobItem = ({ data }) => {
+  const getTimeToNow = () => moment.utc(data.createdAt).local().startOf('seconds').fromNow();
+
   return (
-    <Link href="/jobdetail" passHref>
+    <Link href={`job/${data.id}`} passHref>
       <div className="job-listing">
         <div className="job-listing-details">
           <div className="job-listing-description">
-            <h4 className="job-listing-company">Tech</h4>
-            <h3 className="job-listing-title">Java Developer required</h3>
-            <p className="job-listing-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
-            </p>
+            <h4 className="job-listing-company">{data.company}</h4>
+            <h3 className="job-listing-title">{data.title}</h3>
+            <p className="job-listing-text">{data.description.substring(0, 200)}...</p>
           </div>
 
           <span className="bookmark-icon"></span>
@@ -23,17 +21,17 @@ const JobItem = () => {
         <div className="job-listing-footer">
           <ul>
             <li>
-              <i aria-hidden className="fas fa-industry"></i> Business
+              <i aria-hidden className="fas fa-industry"></i> {data.industry}
             </li>
 
             <li>
-              <i aria-hidden className="fas fa-briefcase"></i> Permanent
+              <i aria-hidden className="fas fa-briefcase"></i> {data.jobType}
             </li>
             <li>
-              <i aria-hidden className="fas fa-money-check-alt"></i>$50000
+              <i aria-hidden className="fas fa-money-check-alt"></i>${data.salary}
             </li>
             <li>
-              <i aria-hidden className="far fa-clock"></i> Post 2 months ago
+              <i aria-hidden className="far fa-clock"></i>{getTimeToNow()}
             </li>
           </ul>
         </div>
