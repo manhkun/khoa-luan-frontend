@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <div className="navWrapper">
       <div className="navContainer">
-        <Link passHref="/">
+        <Link href="/" passHref>
           <div className="logoWrapper">
             <div className="logoImgWrapper">
               <Image width="50" height="50" src="/images/logo.png" alt="Logo" />
@@ -16,13 +16,13 @@ const Header = () => {
           </div>
         </Link>
         <div className="btnsWrapper">
-          <Link passHref="/employeer/jobs/new">
+          <Link href="/employeer/jobs/new" passHref>
             <button className="postAJobButton">
               <span>Post A Job</span>
             </button>
           </Link>
 
-          <Link passHref="/login">
+          <Link href="/login" passHref>
             <button className="loginButtonHeader">
               <span>Login</span>
             </button>
