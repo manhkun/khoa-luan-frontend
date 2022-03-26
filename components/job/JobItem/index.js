@@ -1,10 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import moment from "moment";
+import { getTimePosted } from "../../../utils";
 
 const JobItem = ({ data }) => {
-  const getTimeToNow = () => moment.utc(data.createdAt).local().startOf('seconds').fromNow();
-
   return (
     <Link href={`job/${data.id}`} passHref>
       <div className="job-listing">
@@ -31,7 +29,7 @@ const JobItem = ({ data }) => {
               <i aria-hidden className="fas fa-money-check-alt"></i>${data.salary}
             </li>
             <li>
-              <i aria-hidden className="far fa-clock"></i>{getTimeToNow()}
+              <i aria-hidden className="far fa-clock"></i>{() => getTimePosted(data.createdAt)}
             </li>
           </ul>
         </div>
