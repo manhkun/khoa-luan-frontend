@@ -1,7 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { getTimePosted } from "../../../utils/index";
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+
+mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
 const JobDetails = ({ job, candidates }) => {
+  const createMap = async () => {
+    /* Split coordinates */
+    console.log(job);
+    const coordinates = job.point.split('(')[1].replace(')', '').split(' ');
+
+    /** Create map */
+    const map = new mapboxgl.Map({
+      container: 'job-map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: coordinates,
+      zoom: 11
+    })
+
+    /** Add marker */
+    new mapboxgl.Marker().setLngLat(coordinates).addTo(map);
+  }
+
+  useEffect(() => {
+    createMap()
+  })
+
   return (
     <div className="job-details-wrapper">
       <div className="container container-fluid">
@@ -81,6 +105,9 @@ const JobDetails = ({ job, candidates }) => {
 
               <div className="job-location">
                 <h4 className="mt-5 mb-4">Job Location</h4>
+                <div id="job-map" style={{ height: 520, width: '100%'}}>
+
+                </div>
               </div>
             </div>
           </div>
