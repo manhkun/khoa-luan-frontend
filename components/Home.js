@@ -2,7 +2,9 @@ import React from "react";
 import Link from "next/link";
 import Pagination from "react-js-pagination";
 import { useRouter } from "next/router";
+
 import JobItem from "./job/JobItem";
+import Filters from "./layouts/Filters";
 
 const Home = ({ data }) => {
   const { jobs, count, perPage } = data;
@@ -28,7 +30,7 @@ const Home = ({ data }) => {
       <div className="container container-fluid">
         <div className="row">
           <div className="col-xl-3 col-lg-4">
-            {/* <Filters />{" "} */}
+            <Filters />{" "}
           </div>
 
           <div className="col-xl-9 col-lg-8 content-left-offset">
