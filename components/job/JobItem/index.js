@@ -29,7 +29,7 @@ const JobItem = ({ data }) => {
               <i aria-hidden className="fas fa-money-check-alt"></i>${data.salary}
             </li>
             <li>
-              <i aria-hidden className="far fa-clock"></i>{() => getTimePosted(data.createdAt)}
+              <i aria-hidden className="far fa-clock"></i>{getTimePosted(data.createdAt)}
             </li>
           </ul>
         </div>
