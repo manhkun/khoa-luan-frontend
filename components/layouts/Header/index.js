@@ -4,7 +4,7 @@ import Image from "next/image";
 import AuthContext from "../../../context/AuthContext";
 
 const Header = () => {
-  const { loading, user } = useContext(AuthContext);
+  const { loading, user, logout } = useContext(AuthContext);
 
   return (
     <div className="navWrapper">
@@ -26,7 +26,7 @@ const Header = () => {
           </Link>
 
           {user ? (
-            <div className="btn dropdown ml-3">
+            <div className="dropdown ml-3">
               <a
                 className="btn dropdown-toggle mr-4"
                 id="dropdownMenuButton"
@@ -54,7 +54,7 @@ const Header = () => {
                 </Link>
 
                 <Link href="/">
-                  <a className="dropdown-item text-danger">Logout</a>
+                  <a className="dropdown-item text-danger" onClick={() => logout()}>Logout</a>
                 </Link>
               </div>
 
