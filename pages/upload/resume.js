@@ -1,0 +1,30 @@
+import Layout from "../../components/layouts";
+import UploadResume from "../../components/user/UploadResume";
+import { isAuthenticatedUser } from "../../utils";
+
+export default function UploadResumePage({ access_token }) {
+  return (
+    <Layout title="Upload resume">
+      <UploadResume access_token={access_token} />
+    </Layout> 
+  )
+}
+
+export async function getServerSideProps({ req }) {
+  const access_token = req.cookies.access;
+  const user = await isAuthenticatedUser(access_token);
+
+  if (!user) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+  return {
+    props: {
+      access_token
+    }
+  }
+}

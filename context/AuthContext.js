@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState(null);
   const [updated, setUpdated] = useState(null);
+  const [uploaded, setUploaded] = useState(null);
 
   useEffect(() => {
     if (!user) {
@@ -85,6 +86,25 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const uploadResume = async (formData, access_token) => {
+    try {
+      setLoading(true);
+      const res = await axios.put(`${process.env.API_URL}/api/upload/resume/`, formData, {
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      });
+
+      if (res.data) {
+        setLoading(false);
+        setUploaded(true);
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.response && (error.response.data.detail || error.response.data.error));
+    }
+  }
+
   const loadUser = async () => {
     try {
       setLoading(true);
@@ -133,12 +153,15 @@ export const AuthProvider = ({ children }) => {
         error,
         isAuthenticated,
         updated,
+        uploaded,
         login,
         logout,
         register,
         clearErrors,
         updateProfile,
-        setUpdated
+        setUpdated,
+        setUploaded,
+        uploadResume
       }}
     >
       {children}
