@@ -18,7 +18,7 @@ export async function middleware(req) {
   url.searchParams.forEach((param, key) => {
     if (!allowedParams.includes(key)) {
       url.searchParams.delete(key);
-      changed = true
+      changed = true;
     }
   });
 

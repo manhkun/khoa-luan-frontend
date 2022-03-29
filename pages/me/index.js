@@ -2,11 +2,11 @@ import Layout from "../../components/layouts";
 import UpdateProfile from "../../components/user/UpdateProfile";
 import { isAuthenticatedUser } from "../../utils";
 
-export default function UpdateProfilePage() {
+export default function UpdateProfilePage({ access_token }) {
   return (
     <Layout title="Update profile">
-      <UpdateProfile />
-    </Layout>
+      <UpdateProfile access_token={access_token} />
+    </Layout> 
   )
 }
 
@@ -24,7 +24,7 @@ export async function getServerSideProps({ req }) {
   }
   return {
     props: {
-      data: access_token
+      access_token
     }
   }
 }
