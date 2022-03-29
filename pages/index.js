@@ -33,7 +33,6 @@ export async function getServerSideProps({ query }) {
   }
 
   const queryStr = serialize(queryObj);
-  console.log(queryStr)
   const res = await axios.get(`${process.env.API_URL}/api/jobs/?${queryStr}`);
   const data = res.data;
 

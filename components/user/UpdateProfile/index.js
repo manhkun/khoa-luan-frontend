@@ -23,7 +23,7 @@ const UpdateProfile = () => {
     if (error) {
       toast.error(error)
     }
-  }, [loading, error, router]);
+  }, [loading, user, error, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
