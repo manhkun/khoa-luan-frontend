@@ -1,13 +1,11 @@
-import axios from "axios";
 import Layout from "../components/layouts";
 import Login from "../components/auth/Login";
 
 
-export default function Index({ data }) {
-  console.log(data)
+export default function LoginPage() {
   return (
     <Layout title="Login">
-      <Login data={data} />
+      <Login />
     </Layout>
   )
 }

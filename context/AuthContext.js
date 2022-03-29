@@ -37,6 +37,28 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const register = async ({ firstName, lastName, email, password }) => {
+    try {
+      setLoading(true);
+      const res = await axios.post(`${process.env.API_URL}/api/register/`, {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        password
+      });
+
+      console.log(res)
+
+      if (res.data.message) {
+        setLoading(false);
+        router.push('/login');
+      }
+    } catch (error) {
+      setLoading(false);
+      setError(error.response && (error.response.data.detail || error.response.data.error));
+    }
+  }
+
   const loadUser = async () => {
     try {
       setLoading(true);
@@ -46,7 +68,6 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         setLoading(false);
         setUser(res.data.user);
-        console.log(user)
       }
     } catch (error) {
       setLoading(false);
@@ -60,8 +81,6 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const res = await axios.post('/api/auth/logout');
-      console.log(res);
-      console.log('first')
 
       if (res.data.success) {
         setIsAuthenticated(false);
@@ -75,6 +94,11 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  // Clear errors
+  const clearErrors = () => {
+    setError(null);
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -83,7 +107,9 @@ export const AuthProvider = ({ children }) => {
         error,
         isAuthenticated,
         login,
-        logout
+        logout,
+        register,
+        clearErrors
       }}
     >
       {children}
