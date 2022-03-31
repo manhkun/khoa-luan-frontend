@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
-import { getTimePosted } from "../../../utils/index";
+import React, { useContext, useEffect } from "react";
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
+import { getTimePosted } from "../../../utils/index";
+import JobContext from "../../../context/JobContext";
+import { toast } from "react-toastify";
 
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
-const JobDetails = ({ job, candidates }) => {
+const JobDetails = ({ job, candidates, access_token }) => {
+  const { applyToJob, applied, error, loading, clearErrors } = useContext(JobContext);
+
   const createMap = async () => {
     /* Split coordinates */
-    console.log(job);
     const coordinates = job.point.split('(')[1].replace(')', '').split(' ');
 
     /** Create map */
@@ -23,8 +26,17 @@ const JobDetails = ({ job, candidates }) => {
   }
 
   useEffect(() => {
-    createMap()
-  })
+    createMap();
+
+    if (error) {
+      toast.error(error);
+      clearErrors();
+    }
+  }, [error])
+
+  const handleApplyToJob = () => {
+    applyToJob(job.id, access_token)
+  }
 
   return (
     <div className="job-details-wrapper">
@@ -45,9 +57,21 @@ const JobDetails = ({ job, candidates }) => {
 
                 <div className="mt-3">
                   <span>
-                    <button className="btn btn-primary px-4 py-2 apply-btn">
-                      Apply Now
-                    </button>
+                    {loading ? (
+                      "Loading..."
+                    ) : applied ? (
+                      <button className="btn btn-success px-4 py-2 apply-btn" disabled>
+                        <i aria-hidden className="fas fa-check"></i>
+                        {loading ? "Loading..." : "Applied"}
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-primary px-4 py-2 apply-btn"
+                        onClick={handleApplyToJob}
+                      >
+                        {loading ? "Loading..." : "Apply now"}
+                      </button>
+                    )}
                     <span className="ml-4 text-success">
                       <b>{candidates}</b> candidates has applied to this job.
                     </span>
