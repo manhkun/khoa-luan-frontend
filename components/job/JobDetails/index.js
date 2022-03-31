@@ -3,11 +3,12 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
 import { getTimePosted } from "../../../utils/index";
 import JobContext from "../../../context/JobContext";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
 
 const JobDetails = ({ job, candidates, access_token }) => {
-  const { applyToJob, applied, error, loading, clearErrors } = useContext(JobContext);
+  const { applyToJob, applied, error, loading, checkJobApplied, clearErrors } = useContext(JobContext);
 
   const createMap = async () => {
     /* Split coordinates */
@@ -32,10 +33,19 @@ const JobDetails = ({ job, candidates, access_token }) => {
       toast.error(error);
       clearErrors();
     }
+
+    checkJobApplied(job.id, access_token)
   }, [error])
 
   const handleApplyToJob = () => {
     applyToJob(job.id, access_token)
+  }
+
+  const isDateOver = () => {
+    const d1 = moment(job.lastDate);
+    const d2 = moment(Date.now());
+
+    return d1.diff(d2) <= 0;
   }
 
   return (
@@ -68,6 +78,7 @@ const JobDetails = ({ job, candidates, access_token }) => {
                       <button
                         className="btn btn-primary px-4 py-2 apply-btn"
                         onClick={handleApplyToJob}
+                        disabled={isDateOver()}
                       >
                         {loading ? "Loading..." : "Apply now"}
                       </button>
@@ -150,14 +161,16 @@ const JobDetails = ({ job, candidates, access_token }) => {
               <p>{job.lastDate.substring(0, 10)}</p>
             </div>
 
-            <div className="mt-5 p-0">
-              <div className="alert alert-danger">
-                <h5>Note:</h5>
-                You can no longer apply to this job. This job is expired. Last
-                date to apply for this job was: <b>15-2-2022</b>
-                <br /> Checkout others job on Jobbee.
+            {isDateOver() && (
+              <div className="mt-5 p-0">
+                <div className="alert alert-danger">
+                  <h5>Note:</h5>
+                  You can no longer apply to this job. This job is expired. Last
+                  date to apply for this job was: <b>{job.lastDate.substring(0, 10)}</b>
+                  <br /> Checkout others job on Jobbee.
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
